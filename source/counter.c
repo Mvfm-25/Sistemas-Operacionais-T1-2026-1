@@ -9,40 +9,32 @@
 
 void *threadFormiga(void *arg);
 
-int counter;
+int counter = 0;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 int main()
 {
-    //byThreads(MIN); byThreads(MED); byThreads(MAX);
-    //byFork(MIN); byFork(MED); byFork(MAX);
-
     pthread_t meuTrabalhador;
     int ret;
 
+    printf("Estado inicial Counter : %d \n", counter);
     printf("Criando nova thread trabalhadora :\n");
-    ret = pthread_create(&meuTrabalhador, NULL, &threadFormiga, NULL);
+    ret = pthread_create(&meuTrabalhador, NULL, &threadFormiga, &counter);
 
     if(ret != 0)
     {
         printf("Erro ao criar o novo trabalhador!\n");
         exit(EXIT_FAILURE);
     }
+    printf("Estado atual do counter : %d \n", counter);
     pthread_exit(NULL);
 }
-
-//int byThreads(int numberThreads)
-//{
-    // Limpa o contador, só pra ter certeza.
-//    counter = 0;
-//}
 
 void *threadFormiga(void *arg)
 {
     printf("Trabalhador criado!\n");
+    pthread_mutex_lock(&lock);
+    counter+=1;
+    pthread_mutex_unlock(&lock);
+    return NULL;
 }
-
-//int byFork(int numberProcess)
-//{
-    // Limpa o contador, só pra ter certeza.
-//    counter = 0;
-//}
