@@ -7,34 +7,50 @@
 #define MED 4
 #define MAX 8
 
+// Init
 void *threadFormiga(void *arg);
-
 int counter = 0;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 int main()
 {
-    pthread_t meuTrabalhador;
+    pthread_t trabalhadoresMin[MIN];
+    pthread_t trabalhadoresMed[MED];
+    pthread_t trabalhadoresMax[MAX];
+
     int ret;
 
-    printf("Estado inicial Counter : %d \n", counter);
-    printf("Criando nova thread trabalhadora :\n");
-    ret = pthread_create(&meuTrabalhador, NULL, &threadFormiga, &counter);
+    int target = 100;
 
-    if(ret != 0)
+    for(int i = 0; i < MIN; i++)
     {
-        printf("Erro ao criar o novo trabalhador!\n");
-        exit(EXIT_FAILURE);
+        ret = pthread_create(&trabalhadoresMin[i], NULL, threadFormiga, &target);
+        if(ret)
+        {
+            printf("Erro ao criar a thread %d\n", i);
+            exit(-1);
+        }
     }
+
+    for (int i = 0; i < MIN; i++)
+    {
+        pthread_join(trabalhadoresMin[i], NULL);
+    }
+
     printf("Estado atual do counter : %d \n", counter);
-    pthread_exit(NULL);
+    return 0;
 }
 
 void *threadFormiga(void *arg)
 {
-    printf("Trabalhador criado!\n");
-    pthread_mutex_lock(&lock);
-    counter+=1;
-    pthread_mutex_unlock(&lock);
+    int target = *((int *)arg);
+    
+    for(int i = 0; i < target; i++)
+    {
+        pthread_mutex_lock(&lock);
+        counter+=1;
+        pthread_mutex_unlock(&lock);
+    }
+
     return NULL;
 }
