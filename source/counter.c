@@ -16,10 +16,7 @@
 
 #define SEM_NAME "/counter_t1_sem"
 
-// =============================================================================
 // Experimento T1: Threads sem sincronizacao
-// =============================================================================
-
 static long counter_t1 = 0;
 
 static void *worker_t1(void *arg)
@@ -47,10 +44,7 @@ void experiment_t1(int n)
     printf("T1 (N=%d): counter = %ld\n", n, counter_t1);
 }
 
-// =============================================================================
 // Experimento T2: Threads com pthread_mutex
-// =============================================================================
-
 static long counter_t2 = 0;
 static pthread_mutex_t mutex_t2 = PTHREAD_MUTEX_INITIALIZER;
 
@@ -86,10 +80,7 @@ void experiment_t2(int n)
     printf("T2 (N=%d): counter = %ld\n", n, counter_t2);
 }
 
-// =============================================================================
 // Experimento P1: Processos com memoria compartilhada, sem sincronizacao
-// =============================================================================
-
 void experiment_p1(int n)
 {
     int shmid = shmget(IPC_PRIVATE, sizeof(long), IPC_CREAT | 0666);
@@ -119,10 +110,7 @@ void experiment_p1(int n)
     shmctl(shmid, IPC_RMID, NULL);
 }
 
-// =============================================================================
 // Experimento P2: Processos com memoria compartilhada + semaforos
-// =============================================================================
-
 void experiment_p2(int n)
 {
     sem_unlink(SEM_NAME);
@@ -164,10 +152,7 @@ void experiment_p2(int n)
     sem_unlink(SEM_NAME);
 }
 
-// =============================================================================
 // Main
-// =============================================================================
-
 int main(int argc, char *argv[])
 {
     if (argc != 3) {

@@ -1,5 +1,6 @@
+SHELL   = /bin/bash
 CC      = gcc
-CFLAGS  = -Wall -O2 -pthread
+CFLAGS  = -Wall -O0 -pthread
 TARGET  = exec/counter
 SRC     = source/counter.c
 
