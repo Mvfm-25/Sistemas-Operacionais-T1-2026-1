@@ -16,6 +16,8 @@
 
 #define SEM_NAME "/counter_t1_sem"
 
+// [mvfm]
+
 // Experimento T1: Threads sem sincronizacao
 static long counter_t1 = 0;
 
